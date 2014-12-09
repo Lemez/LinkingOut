@@ -7,18 +7,24 @@ require 'watir-webdriver'
 require "awesome_print"
 # require "authentic_jobs"
 
-@your_consumer_key = '77lto3u2zdc1b8'
-@your_consumer_secret = 'WCRtqKqmg73Oclth'
-@access1 = "42947a94-5402-48e9-b743-171b04796438"
-@access2 = "556addc5-02fc-40ef-b0a8-73ec8de22415"
+@your_consumer_key = LINKEDINAPIKEY
+@your_consumer_secret = SECRET_KEY
+@access1 = ACCESS_CODE_1
+@access2 = ACCESS_CODE_2
 
-@jobs_api_key = '3692bad72a1c6d529257a89d00daf638'
+@jobs_api_key = AUTHENTIC_API_KEY
 
 CLIENT = LinkedIn::Client.new(@your_consumer_key, @your_consumer_secret)
 
 @api_fields = ["universal-name","email-domains","company-type","ticker","website-url","industries","status","logo-url","square-logo-url","blog-rss-url","twitter-id","employee-count-range","specialties","locations","description","stock-exchange","founded-year","end-year","num-followers"]
 
 # @data_keys = ["company_type", "description", "email_domains", "employee_count_range", "address", industries", "locations", "logo_url", "num_followers", "specialties", "square_logo_url", "status", "twitter_id", "universal_name", "website_url"]
+
+def enter_api
+    client = CLIENT
+    client.authorize_from_access(@access1,@access2)
+end
+
 
 def get_random_index number
     last_i = number-1
@@ -307,10 +313,6 @@ end
 
 
 
-def enter_api
-    client = CLIENT
-    client.authorize_from_access(@access1,@access2)
-end
 
 
 
