@@ -86,14 +86,14 @@ begin
 ########### API CALLS ###########
 
 	# ∞∞∞∞∞ MAIN FUNCTION FOR COMPANY DATA - API HEAVY, NO LOGIN REQUIRED ∞∞∞∞∞
-		# @company_data = get_list_of_companies ARGV[0] # enter search term eg 'equity' as you run the script
-		# random_int = get_random_index(@company_data.length)
-		# @company_details = clean_company_data @company_data[random_int] # get clean useable data from a random company in the list
+		@company_data = get_list_of_companies ARGV[0] # enter search term eg 'equity' as you run the script
+		random_int = get_random_index(@company_data.length)
+		@company_details = clean_company_data @company_data[random_int] # get clean useable data from a random company in the list
 
 	# ∞∞∞∞∞ END MAIN FUNCTION FOR COMPANY DATA ∞∞∞∞∞
 
 	# ∞∞∞∞∞ TEMP FIX FOR CHECKING ∞∞∞∞∞
-		@company_details = clean_company_data @data 
+		# @company_details = clean_company_data @data 
 	
 
 ########### END API CALLS ###########	

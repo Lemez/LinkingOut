@@ -5,6 +5,7 @@ require 'open-uri'
 require 'mechanize'
 require 'watir-webdriver'
 require "awesome_print"
+require_relative './secrets'
 # require "authentic_jobs"
 
 @your_consumer_key = LINKEDINAPIKEY
