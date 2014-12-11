@@ -86,9 +86,9 @@ begin
 ########### API CALLS ###########
 
 	# ∞∞∞∞∞ MAIN FUNCTION FOR COMPANY DATA - API HEAVY, NO LOGIN REQUIRED ∞∞∞∞∞
-		@company_data = get_list_of_companies ARGV[0] # enter search term eg 'equity' as you run the script
-		random_int = get_random_index(@company_data.length)
-		@company_details = clean_company_data @company_data[random_int] # get clean useable data from a random company in the list
+		# @company_data = get_list_of_companies ARGV[0] # enter search term eg 'equity' as you run the script
+		# random_int = get_random_index(@company_data.length)
+		# @company_details = clean_company_data @company_data[random_int] # get clean useable data from a random company in the list
 
 	# ∞∞∞∞∞ END MAIN FUNCTION FOR COMPANY DATA ∞∞∞∞∞
 
@@ -98,22 +98,39 @@ begin
 
 ########### END API CALLS ###########	
 
-########### PROFILE HACKING #############
+########### PROFILE LOGIN #############
 
 	# ∞∞∞∞∞ LOGIN FIRST ∞∞∞∞∞	
 		@browser = login @email,@password
 
+########### PROFILE HACKING ############
+
 	# ∞∞∞∞∞ GET A JOB TITLE ∞∞∞∞∞
-		@position = find_jobs @browser,ARGV[0]
+		# @position = find_jobs @browser,ARGV[0]
 
 	# ∞∞∞∞∞ ADD NEW JOB TO PROFILE ∞∞∞∞∞
-		add_position(@browser, @company_details, @position)
+		# add_position(@browser, @company_details, @position)
+
+	# ∞∞∞∞∞ GET INSPIRATIONAL QUOTES ∞∞∞∞∞
+		@random_quote = get_quotes ARGV[0]
 
 	# ∞∞∞∞∞ ADD HEADLINE SUMMARY TEXT ∞∞∞∞∞
-		# add_summary @browser,options['summary']
+		add_summary @browser,@random_quote
+
+
+	# ∞∞∞∞∞ CHANGE YOUR SUMMARY TEXT ∞∞∞∞∞
+		#need to add something here
+
+		# ∞∞∞∞∞ SHARE UPDATE ∞∞∞∞∞
+		@random_quote = format_quote @random_quote
+		# share_wisdom @random_quote ... check out access levels
+
+
 
 	# ∞∞∞∞∞ ADD PICTURE / MEDIA ∞∞∞∞∞
 		# add_pic_to_history @browser,options['imageurl'],options['imagetitle'],options['description']
+
+	
 
 ########### END PROFILE HACKING #############
 

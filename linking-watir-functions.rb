@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'nokogiri'
 require 'linkedin'
 require 'json'
 require 'open-uri'
@@ -18,6 +19,12 @@ require_relative './secrets'
 CLIENT = LinkedIn::Client.new(@your_consumer_key, @your_consumer_secret)
 
 @api_fields = ["universal-name","email-domains","company-type","ticker","website-url","industries","status","logo-url","square-logo-url","blog-rss-url","twitter-id","employee-count-range","specialties","locations","description","stock-exchange","founded-year","end-year","num-followers"]
+
+@quote_fields = ['age','alone','amazing','anger','anniversary','architecture','art','favorite','attitude','beauty','best','birthday','brainy','business','car','change','communication','computers','cool','courage','dad','dating','death','design','diet','dreams','education','environmental','equality','experience','failure','faith','family','famous','fear','finance','fitness','food','forgiveness','freedom','friendship','funny','future','gardening','god','good','government','graduation','great','happiness','health','history','home','hope','humor','imagination','inspirational','intelligence','jealousy','knowledge','leadership','learning','legal','life','love','marriage','medical','men','mom','money','morning','motivational','movies','music','nature','parenting','patience','patriotism','peace','pet','poetry','politics','positive','power','relationship','religion','respect','romantic','sad','science','smile','society','sports','strength','success','sympathy','teacher','technology','teen','thankful','time','travel','trust','truth','war','wedding','wisdom','women','work']
+
+
+
+
 
 # @data_keys = ["company_type", "description", "email_domains", "employee_count_range", "address", industries", "locations", "logo_url", "num_followers", "specialties", "square_logo_url", "status", "twitter_id", "universal_name", "website_url"]
 
@@ -149,6 +156,29 @@ def download_pic name,url
     agent.get(url).save "images/#{name}.jpg" 
 end
 
+def get_quotes string
+   
+    stem = 'http://www.brainyquote.com/quotes/topics/topic_'
+    ending = '.html'
+    string = 'yo' unless string
+
+    if @quote_fields.include?(string)
+        url = stem + string + ending 
+    else 
+        url = 'http://www.brainyquote.com/quotes/topics/topic_business.html'
+    end
+
+    doc = Nokogiri::HTML(open(url))
+
+    quotes = doc.css(".bqQuoteLink") # get all quotes
+    authors = doc.css(".bq-aut") # get their authors quotes
+
+    i = Random.new.rand(quotes.length) # generate a random number
+
+    p random_quote = [quotes[i].content,authors[i].content]
+
+    return random_quote
+end
 
 
 def add_position(browser,company_details,position)
@@ -233,13 +263,30 @@ def add_position(browser,company_details,position)
     p "Job saved"
 end
 
+def format_quote summary
+    return '"' + summary[0] + '"' + "\r\n" + summary[1]
+end
+
 def add_summary browser,summary
-    @summary = summary
-    browser.span(:text => 'Add a summary').click
-    s = browser.text_field(:name => 'expertise_comments')
-    s.set @summary
+    sum = browser.span(:text => 'Add a summary')
+    sum = browser.button :title => 'Click to add a new summary' unless sum.exists?
+    sum.click
+
+    s = browser.textarea(:name => 'expertise_comments')
+    
+    @summary_formatted = format_quote summary
+    s.set @summary_formatted
+
     browser.button(:name => 'submit').click
     p "Summary saved"
+end
+
+def share_wisdom wise_thing
+    
+    enter_api
+    
+    client = CLIENT
+    client.add_share(:comment => wise_thing)
 end
 
 def add_pic_to_history browser,image_url, imagetitle, imagedesc
